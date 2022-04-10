@@ -3516,11 +3516,7 @@ endif        ! end last_step check
   qd(is:ie) = ql(is:ie) + qs(is:ie)
 
   do i=is,ie
-#ifdef MULTI_GASES
-     cvm(i) = (1.-(qv(i)+qd(i)))*cv_air*vicvqd(q(i,j,k,1:num_gas)) + qv(i)*cv_vap + ql(i)*c_liq + qs(i)*c_ice
-#else
      cvm(i) = (1.-(qv(i)+qd(i)))*cv_air + qv(i)*cv_vap + ql(i)*c_liq + qs(i)*c_ice
-#endif,
   enddo
 
 #else
@@ -3622,11 +3618,7 @@ endif        ! end last_step check
   qd(is:ie) = ql(is:ie) + qs(is:ie)
 
   do i=is,ie
-#ifdef MULTI_GASES
-     cpm(i) = (1.-(qv(i)+qd(i)))*cp_air * vicpqd(q(i,j,k,:)) + qv(i)*cp_vapor + ql(i)*c_liq + qs(i)*c_ice
-#else
      cpm(i) = (1.-(qv(i)+qd(i)))*cp_air + qv(i)*cp_vap + ql(i)*c_liq + qs(i)*c_ice
-#endif
   enddo
 
 #else
