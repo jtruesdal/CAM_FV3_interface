@@ -3499,6 +3499,32 @@ endif        ! end last_step check
   real, dimension(is:ie):: qv, ql, qs
   integer:: i
 
+#ifdef CESMCOUPLED
+  ql=0.
+  qs=0.
+  if (sphum.ge.1.and.sphum.le.6) then
+     qv(is:ie) = q(is:ie,j,k,sphum)
+  else
+     !!endrun qv must be set
+  end if
+
+  if (liq_wat.ge.1.and.liq_wat.le.6) ql(is:ie) = ql(is:ie)+q(is:ie,j,k,liq_wat)
+  if (rainwat.ge.1.and.rainwat.le.6) ql(is:ie) = ql(is:ie)+q(is:ie,j,k,rainwat)
+  if (ice_wat.ge.1.and.ice_wat.le.6) qs(is:ie) = qs(is:ie)+q(is:ie,j,k,ice_wat)
+  if (snowwat.ge.1.and.snowwat.le.6) qs(is:ie) = qs(is:ie)+q(is:ie,j,k,snowwat)
+  if (graupel.ge.1.and.graupel.le.6) qs(is:ie) = qs(is:ie)+q(is:ie,j,k,graupel)
+  qd(is:ie) = ql(is:ie) + qs(is:ie)
+
+  do i=is,ie
+#ifdef MULTI_GASES
+     cvm(i) = (1.-(qv(i)+qd(i)))*cv_air*vicvqd(q(i,j,k,1:num_gas)) + qv(i)*cv_vap + ql(i)*c_liq + qs(i)*c_ice
+#else
+     cvm(i) = (1.-(qv(i)+qd(i)))*cv_air + qv(i)*cv_vap + ql(i)*c_liq + qs(i)*c_ice
+#endif,
+  enddo
+
+#else
+
   select case (nwat)
 
    case(2)
@@ -3562,6 +3588,8 @@ endif        ! end last_step check
      enddo
  end select
 
+#endif
+
  end subroutine moist_cv
 
  subroutine moist_cp(is,ie, isd,ied, jsd,jed, km, j, k, nwat, sphum, liq_wat, rainwat,    &
@@ -3576,6 +3604,32 @@ endif        ! end last_step check
   real, parameter:: t_i0 = 15.
   real, dimension(is:ie):: qv, ql, qs
   integer:: i
+
+#ifdef CESMCOUPLED
+  ql=0.
+  qs=0.
+  if (sphum.ge.1.and.sphum.le.6) then
+     qv(is:ie) = q(is:ie,j,k,sphum)
+  else
+     !!endrun qv must be set
+  end if
+
+  if (liq_wat.ge.1.and.liq_wat.le.6) ql(is:ie) = ql(is:ie)+q(is:ie,j,k,liq_wat)
+  if (rainwat.ge.1.and.rainwat.le.6) ql(is:ie) = ql(is:ie)+q(is:ie,j,k,rainwat)
+  if (ice_wat.ge.1.and.ice_wat.le.6) qs(is:ie) = qs(is:ie)+q(is:ie,j,k,ice_wat)
+  if (snowwat.ge.1.and.snowwat.le.6) qs(is:ie) = qs(is:ie)+q(is:ie,j,k,snowwat)
+  if (graupel.ge.1.and.graupel.le.6) qs(is:ie) = qs(is:ie)+q(is:ie,j,k,graupel)
+  qd(is:ie) = ql(is:ie) + qs(is:ie)
+
+  do i=is,ie
+#ifdef MULTI_GASES
+     cpm(i) = (1.-(qv(i)+qd(i)))*cp_air * vicpqd(q(i,j,k,:)) + qv(i)*cp_vapor + ql(i)*c_liq + qs(i)*c_ice
+#else
+     cpm(i) = (1.-(qv(i)+qd(i)))*cp_air + qv(i)*cp_vap + ql(i)*c_liq + qs(i)*c_ice
+#endif
+  enddo
+
+#else
 
   select case (nwat)
 
@@ -3640,6 +3694,8 @@ endif        ! end last_step check
         cpm(i) = cp_air
      enddo
   end select
+
+#endif
 
  end subroutine moist_cp
 
