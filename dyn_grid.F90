@@ -36,7 +36,6 @@ module dyn_grid
     use fms_mod,          only: fms_init, write_version_number, set_domain
     use fv_arrays_mod,    only: fv_atmos_type
     use fv_control_mod,   only: ngrids,fv_control_init
-    use fv_mp_mod,        only: mp_bcst
     use mpp_mod,          only: mpp_pe, mpp_root_pe
     use physics_column_type,    only: physics_column_t
     use physconst,        only: rearth,pi
@@ -116,7 +115,7 @@ subroutine dyn_grid_init()
    use block_control_mod,  only: block_control_type, define_blocks_packed
    use cam_initfiles,      only: initial_file_get_id
    use constants_mod,      only: constants_init
-   use fv_mp_mod,          only: switch_current_Atm,mp_gather, mp_bcst
+   use fv_mp_mod,          only: switch_current_Atm,mp_gather
    use hycoef,             only: hycoef_init, hyai, hybi, hypi, hypm, nprlev
    use mpp_mod,            only: mpp_init, mpp_npes, mpp_get_current_pelist,mpp_gather
    use pmgrid,             only: plev
