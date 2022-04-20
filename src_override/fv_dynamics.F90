@@ -1390,8 +1390,8 @@ contains
 
     call c2l_ord2(u, v, ua, va, gridstruct, npz, gridstruct%grid_type, bd, gridstruct%bounded_domain)
 
-!$OMP parallel do default(none) shared(is,ie,js,je,npz,gridstruct,aam,m_fac,ps,ptop,delp,agrav,ua,radius,omega) &
-!$OMP                          private(r1, r2, dm)
+!!!!$OMP parallel do default(none) shared(is,ie,js,je,npz,gridstruct,aam,m_fac,ps,ptop,delp,agrav,ua,radius,omega) &
+!!!!$OMP                          private(r1, r2, dm)
   do j=js,je
      do i=is,ie
         r1(i) = radius*cos(gridstruct%agrid(i,j,2))
