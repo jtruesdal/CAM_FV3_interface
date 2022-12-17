@@ -1052,9 +1052,6 @@ subroutine read_inidat(dyn_in)
         end do
      end do
 
-!jt     call analytic_ic_set_ic(vcoord, latvals_rad, lonvals_rad, glob_ind ,            &
-!jt          PHIS_OUT=phis_tmp(:,:))
-
      call analytic_ic_set_ic(vcoord, latvals_rad, lonvals_rad, glob_ind,            &
           T=dbuf3(:,:,:))
      n=0
@@ -1541,7 +1538,6 @@ subroutine set_phis(dyn_in)
 
       fieldname = 'PHIS'
       if (dyn_field_exists(fh_topo, trim(fieldname))) then
-!jt         call read_dyn_var(fieldname, fh_topo, 'ncol', phis_tmp)
          call read_topo_field_1d(fieldname, fh_topo, 'ncol', phis_tmp)
       else
          call endrun(subname//': Could not find PHIS field on input datafile')

@@ -159,10 +159,6 @@ subroutine dyn_grid_init()
 
    call fv_control_init( Atm, dt_atmos_real, mytile, grids_on_this_pe, p_split)  ! allocates Atm components
 
-!jt   do n=1,ngrids
-!jt      if (grids_on_this_pe(n)) mytile = n
-!jt   enddo
-
 !----- write version and namelist to log file -----
    call write_version_number ( version, tagname )
 
