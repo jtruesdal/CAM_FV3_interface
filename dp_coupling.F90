@@ -18,7 +18,8 @@ module dp_coupling
   use perf_mod,          only: t_startf, t_stopf
   use phys_grid,         only: get_dyn_col_p, columns_on_task, get_chunk_info_p
   use phys_grid,         only: get_ncols_p
-  use physconst,         only: cpair, gravit, zvir, cappa, rairv
+  use physconst,         only: cpair, gravit, rair, zvir, cappa
+  use air_composition,   only: rairv
   use physics_types,     only: physics_state, physics_tend
   use ppgrid,            only: begchunk, endchunk, pcols, pver, pverp
   use shr_kind_mod,      only: r8=>shr_kind_r8, i8 => shr_kind_i8
@@ -245,8 +246,8 @@ subroutine p_d_coupling(phys_state, phys_tend, dyn_in)
   use fms_mod,                only: set_domain
   use fv_arrays_mod,          only: fv_atmos_type
   use fv_grid_utils_mod,      only: cubed_to_latlon
-  use physconst,              only: thermodynamic_active_species_num,thermodynamic_active_species_idx_dycore
-  use physconst,              only: thermodynamic_active_species_cp,thermodynamic_active_species_cv,dry_air_species_num
+  use air_composition,        only: thermodynamic_active_species_num,thermodynamic_active_species_idx_dycore
+  use air_composition,        only: thermodynamic_active_species_cp,thermodynamic_active_species_cv,dry_air_species_num
   use phys_grid,              only: get_dyn_col_p, columns_on_task, get_chunk_info_p
   use time_manager,           only: get_step_size
 
@@ -523,8 +524,8 @@ subroutine derived_phys_dry(phys_state, phys_tend, pbuf2d)
   use geopotential,   only: geopotential_t
   use physics_buffer, only: physics_buffer_desc, pbuf_get_chunk
   use physics_types,  only: set_wet_to_dry
-  use physconst,      only: thermodynamic_active_species_num
-  use physconst,      only: thermodynamic_active_species_idx,dry_air_species_num
+  use air_composition, only: thermodynamic_active_species_num,thermodynamic_active_species_idx_dycore
+  use air_composition, only: thermodynamic_active_species_idx,dry_air_species_num
   use ppgrid,         only: pver
   use qneg_module,    only: qneg3
   use shr_vmath_mod,  only: shr_vmath_log
@@ -862,7 +863,7 @@ subroutine fv3_tracer_diags(atm)
   use dimensions_mod,        only: nlev,cnst_name_ffsl
   use dyn_grid,              only: mytile
   use fv_arrays_mod,         only: fv_atmos_type
-  use physconst,             only: thermodynamic_active_species_num,thermodynamic_active_species_idx_dycore, &
+  use air_composition,       only: thermodynamic_active_species_num,thermodynamic_active_species_idx_dycore, &
                                    dry_air_species_num
   use fv_eta_mod,            only: get_eta_level
   ! arguments
