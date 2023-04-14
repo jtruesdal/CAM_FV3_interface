@@ -413,7 +413,6 @@ subroutine dyn_init(dyn_in, dyn_out)
    character(len=max_chars)    :: calendar  ! Calendar type
    real(r8)                    :: alpha
 
-
    real(r8), pointer, dimension(:,:)            :: fC,f0   ! Coriolis parameters
    real(r8), pointer, dimension(:,:,:)          :: grid,agrid,delp
    logical, pointer :: cubed_sphere
@@ -719,6 +718,8 @@ subroutine dyn_run(dyn_state)
   integer                          :: psc,idim
   integer                          :: w_diff, nt_dyn
   integer                          :: year,month,day,hour,min,sec,tod
+  real(r8)                         :: time_total
+
   type(fv_atmos_type), pointer     :: Atm(:)
   type (time_type)                 :: fv_time
 
@@ -782,16 +783,15 @@ subroutine dyn_run(dyn_state)
           Atm(mytile)%gridstruct, Atm(mytile)%flagstruct,                &
           Atm(mytile)%neststruct, Atm(mytile)%idiag, Atm(mytile)%bd,          &
           Atm(mytile)%parent_grid, Atm(mytile)%domain, &
+          Atm(mytile)%inline_mp, Atm(mytile)%diss_est, &
 #if ( defined CALC_ENERGY )
-          Atm(mytile)%diss_est, Atm(mytile)%inline_mp, &
           pcnst,thermodynamic_active_species_num,dry_air_species_num, &
           thermodynamic_active_species_idx_dycore, qsize_tracer_idx_cam2dyn, &
           thermodynamic_active_species_cp,thermodynamic_active_species_cv, se_dyn, ke_dyn, wv_dyn,wl_dyn, &
           wi_dyn,wr_dyn,ws_dyn,wg_dyn,tt_dyn,mo_dyn,mr_dyn,gravit,cpair,rearth,omega,fv3_lcp_moist,&
-          fv3_lcv_moist)
-#else
-          Atm(mytile)%diss_est, Atm(mytile)%inline_mp)
+          fv3_lcv_moist, &
 #endif
+          time_total)
 
      if (ngrids > 1 .and. (psc < p_split .or. p_split < 0)) then
         call get_curr_date(year,month,day,tod)

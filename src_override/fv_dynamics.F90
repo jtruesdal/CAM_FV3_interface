@@ -76,7 +76,7 @@ contains
                         ps, pe, pk, peln, pkz, phis, q_con, omga, ua, va, uc, vc,          &
                         ak, bk, mfx, mfy, cx, cy, ze0, hybrid_z, &
                         gridstruct, flagstruct, neststruct, idiag, bd, &
-                        parent_grid, domain, diss_est, inline_mp, &
+                        parent_grid, domain, inline_mp, diss_est,  &
 #if ( defined CALC_ENERGY )
                         qsize,qsize_condensate_loading,dry_air_species_num,           &
                         qsize_condensate_loading_idx,qsize_tracer_idx_cam2dyn,        &
@@ -1487,11 +1487,9 @@ contains
 
     integer :: lchnk,ncol
     integer :: is,ie,js,je,isd,ied,jsd,jed
-!!jt    logical :: fv3_lcp_moist
     logical :: printglobals = .false.
     !-----------------------------------------------------------------------
 
-!!jt    fv3_lcp_moist                = .false.
     dp = delp
 
     is = bd%is
@@ -1564,8 +1562,6 @@ contains
                if ((.not.fv3_lcp_moist).and.(.not.fv3_lcv_moist).and.qsize_condensate_loading-dry_air_species_num>1) then
                  do nq=2,qsize_condensate_loading-dry_air_species_num
                    m_cnst_ffsl=qsize_condensate_loading_idx(nq)
-!jt                   m_cnst=qsize_condensate_loading_idx(nq)
-!jt                   m_cnst_ffsl=qsize_tracer_idx_cam2dyn(m_cnst)
                    dp(i,j,k) = dp(i,j,k) - delp(i,j,k)*q(i,j,k,m_cnst_ffsl)
                  end do
                end if
