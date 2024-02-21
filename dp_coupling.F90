@@ -879,7 +879,7 @@ subroutine fv3_tracer_diags(atm)
   real(r8), allocatable, dimension(:,:,:)  :: delpdry, psq
   real(r8), allocatable, dimension(:,:)    :: psdry, q_strat
   real(r8), allocatable, dimension(:)      :: phalf,pfull
-  real(r8)                     :: p_ref = 1.E5   !< Surface pressure used to construct a horizontally-uniform reference
+  real(r8)                     :: p_ref = 1.E5_r8   !< Surface pressure used to construct a horizontally-uniform reference
   !----------------------------------------------------------------------------
 
   is = Atm(mytile)%bd%is
