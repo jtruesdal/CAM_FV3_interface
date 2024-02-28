@@ -665,7 +665,7 @@ subroutine dyn_init(dyn_in, dyn_out)
    allocate(mr_dyn(is:ie,js:je,ndiag))
    allocate(mo_dyn(is:ie,js:je,ndiag))
 ! Initialize the fv3 diagnostic interface set fv3 start time.
-!     
+!
    call get_curr_date(year,month,day,tod)
    hour    = tod / 3600
    min     = (tod - hour*3600) / 60
@@ -707,7 +707,7 @@ subroutine dyn_run(dyn_state)
   use air_composition,        only: thermodynamic_active_species_num, thermodynamic_active_species_idx_dycore, &
                                     thermodynamic_active_species_cp,thermodynamic_active_species_cv,dry_air_species_num
   use time_manager,           only: get_curr_date,get_step_size
-  use time_manager_mod,       only: time_type,set_date 
+  use time_manager_mod,       only: time_type,set_date
   use tracer_manager_mod,     only: get_tracer_index, NO_TRACER
 
   ! Arguments
@@ -1587,6 +1587,8 @@ subroutine set_phis(dyn_in)
       deallocate(latvals)
       deallocate(lonvals)
       deallocate(dbuf2)
+   else
+      atm(mytile)%phis(is:ie,js:je)=phis_tmp(is:ie,js:je)
    end if
 
    call mpp_update_domains( Atm(mytile)%phis, Atm(mytile)%domain )
